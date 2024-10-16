@@ -8,10 +8,10 @@ import cors from "cors";
 const app = express();
 
 // use middlewares
-app.arguments(express.json());
+app.use(express.json());
 
 // use routes
-app.arguments(cors());
+app.use(cors());
 
 // listen for incoming requests
 app.listen(4000, () => {
