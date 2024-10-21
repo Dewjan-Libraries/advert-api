@@ -18,3 +18,5 @@ advertRouter.get("/adverts/:id", getAd);
 advertRouter.put("/adverts/:id", editAdvert);
 
 advertRouter.delete("/adverts", deleteAdvert);
+
+export default advertRouter;
