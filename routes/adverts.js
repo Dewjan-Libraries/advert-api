@@ -7,9 +7,11 @@ import {
   getAdverts,
 } from "../controllers/adverts.js";
 
+import remoteUpload from '../middlewares/upload.js'
+
 const advertRouter = Router();
 
-advertRouter.post("/adverts", addAdverts);
+advertRouter.post("/adverts", remoteUpload.single('image'), addAdverts);
 
 advertRouter.get("/adverts", getAdverts);
 

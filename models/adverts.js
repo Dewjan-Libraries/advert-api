@@ -22,7 +22,7 @@ const advertSchema = new Schema(
     price: { type: String, required: true },
     image: { type: String, required: true },
     vendor: { type: Types.ObjectId, ref: "Vendor" },
-    description: { type: String },
+    description: { type: String, required: true },
   },
 
   {
