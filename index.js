@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 
 // connect to database
-
+await mongoose.connect(process.env.MONGO_URI);
 // create an express app
 const app = express();
 
