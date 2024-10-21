@@ -1,4 +1,5 @@
 import { AdvertModel } from "../models/adverts.js";
+import { addAdvertValidator } from "../validators/adverts.js";
 
 // post all
 // get adverts
@@ -8,6 +9,10 @@ import { AdvertModel } from "../models/adverts.js";
 
 export const addAdverts = async (req, res, next) => {
   try {
+    const { error, value } = addAdvertValidator.validate({
+      ...req.body,
+      image: req.file?.filename,
+    });
     // posting to the database
     const newAd = new AdvertModel(req.body);
     const savedAd = await newAd.save();
@@ -19,8 +24,12 @@ export const addAdverts = async (req, res, next) => {
 
 export const getAdverts = async (req, res, next) => {
   try {
+    const { filter = "{}", limit = 10, skip = 0 } = req.query;
     // fetching advert from the database
-    const adverts = await AdvertModel.find().populate("vendor");
+    const adverts = await AdvertModel.find(JSON.parse(filter))
+      .populate("vendor")
+      .limit(limit)
+      .skip(skip);
     // return response
     res.status(201).json(adverts);
   } catch (error) {
