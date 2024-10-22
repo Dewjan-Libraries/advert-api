@@ -23,7 +23,7 @@ export const addAdverts = async (req, res, next) => {
     res.status(201).json(savedAd);
   } catch (error) {
     next(error);
-  }                                                   
+  }
 };
 
 // ...vendor: req.auth.id
@@ -69,7 +69,7 @@ export const editAdvert = async (req, res, next) => {
     const edit = await AdvertModel.findOneAndUpdate(
       {
         // before an update, login details should match
-        id: req.params.id,
+        _id: req.params.id,
         vendor: req.auth.id,
       },
       value,
@@ -87,7 +87,7 @@ export const editAdvert = async (req, res, next) => {
 export const deleteAdvert = async (req, res, next) => {
   try {
     const deleteAd = await AdvertModel.findOneAndDelete({
-      id: req.params.id,
+      _id: req.params.id,
       vendor: req.auth.id,
     });
     if (!deleteAd) {
