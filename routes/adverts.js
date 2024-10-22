@@ -7,19 +7,25 @@ import {
   getAdverts,
 } from "../controllers/adverts.js";
 
-import { remoteUpload } from "../middlewares/upload.js"
+import { remoteUpload } from "../middlewares/upload.js";
+import { isAuthenticated } from "../middlewares/auth.js";
 
 const advertRouter = Router();
 
 // protect post
-advertRouter.post("/adverts", remoteUpload.single('image'), addAdverts);
+advertRouter.post(
+  "/adverts",
+  isAuthenticated,
+  remoteUpload.single("image"),
+  addAdverts
+);
 
 advertRouter.get("/adverts", getAdverts);
 
 advertRouter.get("/adverts/:id", getAd);
 
-advertRouter.put("/adverts/:id", editAdvert);
+advertRouter.put("/adverts/:id", isAuthenticated, editAdvert);
 
-advertRouter.delete("/adverts", deleteAdvert);
+advertRouter.delete("/adverts", isAuthenticated, deleteAdvert);
 
 export default advertRouter;
