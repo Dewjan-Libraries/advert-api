@@ -1,14 +1,16 @@
-export const permissions = [
-    {
-        role: 'vendor',
-        actions: [
-            'getProfile',
-            'updateProfile',
-            'addAdverts',
-            'updateAdverts',
-            'getAdvert',
-            'getAdverts',
-            'deleteAdverts'
-        ]
-    }
-]
+const permissions = [
+  {
+    role: "vendor",
+    actions: [
+      "getProfile",
+      "updateProfile",
+      "addAdverts",
+      "updateAdverts",
+      "getAdvert",
+      "getAdverts",
+      "deleteAdverts",
+    ],
+  },
+
+];
+export default permissions
