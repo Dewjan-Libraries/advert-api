@@ -1,5 +1,8 @@
 import { AdvertModel } from "../models/adverts.js";
-import { addAdvertValidator } from "../validators/adverts.js";
+import {
+  addAdvertValidator,
+  updateAdvertValidator,
+} from "../validators/adverts.js";
 
 // post all
 // get adverts
@@ -13,24 +16,27 @@ export const addAdverts = async (req, res, next) => {
       ...req.body,
       image: req.file?.filename,
     });
+    if (error) return res.status(422).json(error);
     // posting to the database
-    const newAd = new AdvertModel(req.body);
+    const newAd = new AdvertModel(value);
     const savedAd = await newAd.save();
     res.status(201).json(savedAd);
   } catch (error) {
     next(error);
-  }
+  }                                                   
 };
+
+// ...vendor: req.auth.id
 
 export const getAdverts = async (req, res, next) => {
   try {
-    const { filter = "{}", limit = 10, skip = 0 } = req.query;
+    const { filter = "{}", sort = "{}", limit = 20, skip = 0 } = req.query;
     // fetching advert from the database
     const adverts = await AdvertModel.find(JSON.parse(filter))
-      .populate("vendor")
+      .sort(JSON.parse(sort))
       .limit(limit)
       .skip(skip);
-    // return response
+
     res.status(201).json(adverts);
   } catch (error) {
     next(error);
@@ -41,6 +47,10 @@ export const getAd = async (req, res, next) => {
   try {
     // fetching a book from the database
     const advert = await AdvertModel.findById(req.params.id);
+
+    if (!advert) {
+      return res.status(404).json("Advert not found");
+    }
     res.status(201).json(advert);
   } catch (error) {
     next(error);
@@ -49,8 +59,25 @@ export const getAd = async (req, res, next) => {
 
 export const editAdvert = async (req, res, next) => {
   try {
-    const edit = await AdvertModel.findByIdAndUpdate(req.params.id, req.body);
+    // validate updated advert
+    const { error, value } = updateAdvertValidator.validate(req.body);
 
+    if (error) {
+      return res.status(422).json(error);
+    }
+
+    const edit = await AdvertModel.findOneAndUpdate(
+      {
+        // before an update, login details should match
+        id: req.params.id,
+        vendor: req.auth.id,
+      },
+      value,
+      { new: true }
+    );
+    if (!edit) {
+      return res.status(404).json("Ad not found");
+    }
     res.status(201).json(edit);
   } catch (error) {
     next(error);
@@ -59,12 +86,14 @@ export const editAdvert = async (req, res, next) => {
 
 export const deleteAdvert = async (req, res, next) => {
   try {
-    const deleteAd = await AdvertModel.findByIdAndDelete(
-      req.params.id,
-      req.body
-    );
-
-    res.status(201).json(deleteAd);
+    const deleteAd = await AdvertModel.findOneAndDelete({
+      id: req.params.id,
+      vendor: req.auth.id,
+    });
+    if (!deleteAd) {
+      return res.status(422).json("Advert not found");
+    }
+    res.status(201).json("Advert deleted");
   } catch (error) {
     next(error);
   }

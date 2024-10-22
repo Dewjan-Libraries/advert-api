@@ -1,3 +1,4 @@
+import { toJSON } from "@reis/mongoose-to-json";
 import { Schema, model, Types } from "mongoose";
 
 // creating a table for the products, to be stored in advertModel
@@ -29,5 +30,7 @@ const advertSchema = new Schema(
     timestamps: true,
   }
 );
+
+advertSchema.plugin(toJSON);
 
 export const AdvertModel = model("Adverts", advertSchema);
