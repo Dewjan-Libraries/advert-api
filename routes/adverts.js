@@ -8,11 +8,12 @@ import {
 } from "../controllers/adverts.js";
 
 import { remoteUpload } from "../middlewares/upload.js"
+import { hasPermission, isAuthenticated } from "../middlewares/auth.js";
 
 const advertRouter = Router();
 
 // protect post
-advertRouter.post("/adverts", remoteUpload.single('image'), addAdverts);
+advertRouter.post("/adverts", isAuthenticated, hasPermission('addAdverts'),remoteUpload.single('image'), addAdverts);
 
 advertRouter.get("/adverts", getAdverts);
 
