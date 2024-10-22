@@ -18,9 +18,12 @@ export const addAdverts = async (req, res, next) => {
     });
     if (error) return res.status(422).json(error);
     // posting to the database
-    const newAd = new AdvertModel(value);
-    const savedAd = await newAd.save();
-    res.status(201).json(savedAd);
+    await AdvertModel.create({
+      ...value,
+      vendor: req.auth.id
+    });
+    // const savedAd = await newAd.save();
+    res.status(201).json("adverts added successfully");
   } catch (error) {
     next(error);
   }
