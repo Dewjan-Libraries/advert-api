@@ -11,8 +11,8 @@ export const vendorSchema = new Schema (
         avatar: {type: String},
         role: {
             type: String,
-            default: 'vendor',
-            enum: ['vendor']
+            default: "vendor",
+            enum: ["vendor"]
         }
         
     },
@@ -23,4 +23,4 @@ export const vendorSchema = new Schema (
 
 vendorSchema.plugin(toJSON);
 
-export const VendorModel = model('vendor', vendorSchema);
+export const VendorModel = model("Vendor", vendorSchema);

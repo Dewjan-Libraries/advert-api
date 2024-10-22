@@ -1,6 +1,6 @@
 import { expressjwt } from "express-jwt";
 import { VendorModel } from "../models/vendors.js";
-import permissions from "../utils/rbac";
+import { permissions } from "../utils/rbac.js";
 
 
 export const isAuthenticated = expressjwt({

@@ -7,7 +7,7 @@ import { multerSaveFilesOrg } from "multer-savefilesorg";
 
 export const remoteUpload = multer({
     storage: multerSaveFilesOrg({
-        apiAccessToken: process.env.SAVEFILESORG_API_KEY,
+        apiAccessToken: process.env.SAVE_FILES,
         relativePath: '/adverts_api/adverts/*' 
     }),
     preservePath: true
