@@ -12,7 +12,7 @@ const advertSchema = new Schema(
         "Mobiles",
         "Electronics",
         "Furniture",
-        "Real estate",
+        "Real Estate",
         "Fashion",
       ],
       required: true,
