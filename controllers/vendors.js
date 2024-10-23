@@ -2,7 +2,7 @@ import { VendorModel } from "../models/vendors.js";
 import pkg from "bcryptjs"
 const { hashSync, compareSync } = pkg;
 import jwt from 'jsonwebtoken'
-import { loginVendorValidator, registerVendorValidator } from "../validators/vendors.js";
+import { loginVendorValidator, registerVendorValidator, updateVendorValidator } from "../validators/vendors.js";
 
 
 // register vendor controller
@@ -37,34 +37,63 @@ export const registerVendor = async (req, res, next) => {
 
 export const loginVendor = async (req, res, next) => {
     try {
-         // validate vendor input
-    const { error, value } = loginVendorValidator.validate(req.body);
-    if (error) {
-        return res.status(422).json(error);
-    }
-    // find one vendor with identifier
-    const vendor = await VendorModel.findOne({ email: value.email });
-    if (!vendor) {
-        return res.status(404).json('Invalid Credentials');
-    }
-    // compare passwords
-    const correctPassword = compareSync(value.password, vendor.password);
-    if (!correctPassword) {
-        return res.status(401).json('Invalid Credentials')
-    }
-    // sign a token for vendor
-    const token = jwt.sign(
-        { id: vendor.id },
-        process.env.JWT_PRIVATE_KEY,
-        { expiresIn: '24h' }
-    );
-    // respond to request
-    res.status(200).json({
-        message: "User Loggedin Successfully",
-        accessToken: token
-    })
+        // validate vendor input
+        const { error, value } = loginVendorValidator.validate(req.body);
+        if (error) {
+            return res.status(422).json(error);
+        }
+        // find one vendor with identifier
+        const vendor = await VendorModel.findOne({ email: value.email });
+        if (!vendor) {
+            return res.status(404).json('Invalid Credentials');
+        }
+        // compare passwords
+        const correctPassword = compareSync(value.password, vendor.password);
+        if (!correctPassword) {
+            return res.status(401).json('Invalid Credentials')
+        }
+        // sign a token for vendor
+        const token = jwt.sign(
+            { id: vendor.id },
+            process.env.JWT_PRIVATE_KEY,
+            { expiresIn: '24h' }
+        );
+        // respond to request
+        res.status(200).json({
+            message: "User Loggedin Successfully",
+            accessToken: token
+        })
     } catch (error) {
         next(error)
     }
-   
+
+}
+
+export const getProfile = async (req, res, next) => {
+    try {
+        // find authenticated user from database
+        const vendor = await VendorModel
+            .findById(req.auth.id)
+            .select({ password: false })
+            // respond to request
+            res.json(vendor);
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const logoutVendor = (req, res, next) => {
+    res.json('Vendor successfully logged out')
+};
+
+export const updateProfile = (req, res, next) => {
+    try {
+        const {error, value} = updateVendorValidator.validate(req.body);
+        if(error) {
+            return res.status(422).json(error)
+        }
+        res.json("Profile Updated Successfully")
+    } catch (error) {
+        next(error)
+    }
 }

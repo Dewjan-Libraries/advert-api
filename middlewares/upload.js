@@ -12,3 +12,11 @@ export const remoteUpload = multer({
     }),
     preservePath: true
 });
+
+export const vendorAvatarUpload = multer({
+    storage: multerSaveFilesOrg({
+        apiAccessToken: process.env.SAVE_FILES,
+        relativePath: '/adverts_api/vendor/avatar/*'
+    }),
+    preservePath: true
+})
