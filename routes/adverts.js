@@ -20,8 +20,8 @@ advertRouter.get("/adverts", getAdverts);
 
 advertRouter.get("/adverts/:id", getAd);
 
-advertRouter.patch("/adverts/:id", isAuthenticated, editAdvert);
+advertRouter.patch("/adverts/:id", isAuthenticated, hasPermission('updateAdverts'),editAdvert);
 
-advertRouter.delete("/adverts/:id", isAuthenticated, deleteAdvert);
+advertRouter.delete("/adverts/:id", isAuthenticated, hasPermission('deleteAdverts'), deleteAdvert);
 
 export default advertRouter;
