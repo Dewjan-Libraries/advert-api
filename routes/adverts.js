@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   addAdverts,
+  countAdverts,
   deleteAdvert,
   editAdvert,
   getAd,
@@ -19,6 +20,8 @@ advertRouter.post("/adverts", isAuthenticated, hasPermission('addAdverts'), remo
 advertRouter.get("/adverts", getAdverts);
 
 advertRouter.get("/adverts/:id", getAd);
+
+advertRouter.get("/adverts/count", countAdverts);
 
 advertRouter.patch("/adverts/:id", isAuthenticated, hasPermission('updateAdverts'),editAdvert);
 
