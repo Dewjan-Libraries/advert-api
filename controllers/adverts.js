@@ -101,3 +101,16 @@ export const deleteAdvert = async (req, res, next) => {
     next(error);
   }
 };
+
+export const countAdverts = async (req,res,next) => {
+  try {
+    const { filter = "{}" } = req.query;
+    // count adverts in database
+    const count = await AdvertModel.countDocuments(JSON.parse(filter));
+
+    // respond to request
+    res.json({count});
+  } catch (error) {
+    next(error)
+  }
+}
