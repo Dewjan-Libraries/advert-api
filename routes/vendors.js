@@ -1,6 +1,8 @@
 // import router
 import { Router } from "express";
-import { loginVendor, registerVendor } from "../controllers/vendors.js";
+import { getProfile, loginVendor, logoutVendor, registerVendor, updateProfile } from "../controllers/vendors.js";
+import { hasPermission, isAuthenticated } from "../middlewares/auth.js";
+import { vendorAvatarUpload } from "../middlewares/upload.js";
 
 // create router
 const vendorRouter = Router();
@@ -9,5 +11,11 @@ const vendorRouter = Router();
 vendorRouter.post("/vendors/register", registerVendor);
 
 vendorRouter.post("/vendors/login", loginVendor);
+
+vendorRouter.get("/vendors/me", isAuthenticated, hasPermission("getProfile"), getProfile);
+
+vendorRouter.post("/vendors/logout", logoutVendor);
+
+vendorRouter.patch("/vendors/me", isAuthenticated, hasPermission("updateProfile"), vendorAvatarUpload.single("avatar"), updateProfile)
 
 export default vendorRouter;

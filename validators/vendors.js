@@ -14,7 +14,7 @@ export const loginVendorValidator = Joi.object({
     password: Joi.string().required()
 });
 
-export const updateVendorAvatar = Joi.object({
+export const updateVendorValidator = Joi.object({
     firstName: Joi.string(),
     middleName: Joi.string(),
     lastName: Joi.string(),
