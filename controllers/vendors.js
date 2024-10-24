@@ -4,6 +4,7 @@ import pkg from "bcryptjs"
 const { hashSync, compareSync } = pkg;
 import jwt from 'jsonwebtoken'
 import { loginVendorValidator, registerVendorValidator, updateVendorValidator } from "../validators/vendors.js";
+import { mailTransporter } from "../utils/mail.js";
 
 
 // register vendor controller
@@ -27,6 +28,11 @@ export const registerVendor = async (req, res, next) => {
             password: hashPassword
         })
         // send confirmation email
+        await mailTransporter.sendMail({
+            to: value.email,
+            subject: 'User Registeration',
+            text: 'User Registered Successfully'
+        })
         // respond to request
         res.json('User Registered Successfully')
     } catch (error) {
@@ -59,6 +65,12 @@ export const loginVendor = async (req, res, next) => {
             process.env.JWT_PRIVATE_KEY,
             { expiresIn: '24h' }
         );
+        // send vendor login alert
+        await mailTransporter.sendMail({
+            to: value.email,
+            subject: 'Vendor Login',
+            text: `Welcome ${value.firstName}, You have successfully logged in. Postiize... post with ease!`
+        })
         // respond to request
         res.status(200).json({
             message: "User Loggedin Successfully",
