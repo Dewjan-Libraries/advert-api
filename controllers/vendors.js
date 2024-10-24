@@ -1,4 +1,4 @@
-import { VendorModel } from "../models/vendors.js";
+import { VendorModel, AdvertModel } from "../models/vendors.js";
 import pkg from "bcryptjs"
 const { hashSync, compareSync } = pkg;
 import jwt from 'jsonwebtoken'
@@ -96,4 +96,23 @@ export const updateProfile = (req, res, next) => {
     } catch (error) {
         next(error)
     }
-}
+};
+
+export const getVendorAdverts = async (req, res, next) => {
+    try {
+      const { filter = "{}", sort = "{}", limit = 20, skip = 0 } = req.query;
+      // fetching advert from the database
+      const adverts = await AdvertModel.find({
+        ...JSON.parse(filter),
+        vendor: req.auth.id
+      })
+        .sort(JSON.parse(sort))
+        .limit(limit)
+        .skip(skip);
+  
+      res.status(201).json(adverts);
+    } catch (error) {
+      next(error);
+    }
+  };
+  

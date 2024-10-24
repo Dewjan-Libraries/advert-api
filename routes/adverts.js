@@ -15,13 +15,13 @@ const advertRouter = Router();
 
 // protect post
 
+advertRouter.get("/adverts/count", countAdverts);
+
 advertRouter.post("/adverts", isAuthenticated, hasPermission('addAdverts'), remoteUpload.single('image'), addAdverts);
 
 advertRouter.get("/adverts", getAdverts);
 
 advertRouter.get("/adverts/:id", getAd);
-
-advertRouter.get("/adverts/count", countAdverts);
 
 advertRouter.patch("/adverts/:id", isAuthenticated, hasPermission('updateAdverts'),editAdvert);
 
