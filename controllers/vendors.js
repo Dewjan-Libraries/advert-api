@@ -1,4 +1,5 @@
-import { VendorModel, AdvertModel } from "../models/vendors.js";
+import { VendorModel } from "../models/vendors.js";
+import { AdvertModel } from "../models/adverts.js";
 import pkg from "bcryptjs"
 const { hashSync, compareSync } = pkg;
 import jwt from 'jsonwebtoken'
