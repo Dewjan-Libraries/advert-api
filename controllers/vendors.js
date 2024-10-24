@@ -66,11 +66,11 @@ export const loginVendor = async (req, res, next) => {
             { expiresIn: '24h' }
         );
         // send vendor login alert
-        await mailTransporter.sendMail({
-            to: value.email,
-            subject: 'Vendor Login',
-            text: `Welcome ${value.firstName}, You have successfully logged in. Postiize... post with ease!`
-        })
+        // await mailTransporter.sendMail({
+        //     to: value.email,
+        //     subject: 'Vendor Login',
+        //     text: "Welcome, You have successfully logged in. Postiize... post with ease!"
+        // })
         // respond to request
         res.status(200).json({
             message: "User Loggedin Successfully",
