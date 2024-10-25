@@ -63,7 +63,10 @@ export const getAd = async (req, res, next) => {
 export const editAdvert = async (req, res, next) => {
   try {
     // validate updated advert
-    const { error, value } = updateAdvertValidator.validate(req.body);
+    const { error, value } = updateAdvertValidator.validate({
+      ...req.body,
+      image: req.file?.filename,
+    });
 
     if (error) {
       return res.status(422).json(error);
