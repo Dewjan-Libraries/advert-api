@@ -23,7 +23,7 @@ advertRouter.get("/adverts", getAdverts);
 
 advertRouter.get("/adverts/:id", getAd);
 
-advertRouter.patch("/adverts/:id", isAuthenticated, hasPermission('updateAdverts'), remoteUpload.single('image'), editAdvert);
+advertRouter.patch("/adverts/:id", isAuthenticated, hasPermission('updateAdverts'), editAdvert);
 
 advertRouter.delete("/adverts/:id", isAuthenticated, hasPermission('deleteAdverts'), deleteAdvert);
 
